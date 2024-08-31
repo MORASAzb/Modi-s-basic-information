@@ -1,0 +1,9 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#590D35",
+        "titleBar.activeBackground": "#7D124B",
+        "titleBar.activeForeground": "#FFFCFD"
+    },
+    "git.ignoreLimitWarning": true,
+    "cSpell.words": []
+}

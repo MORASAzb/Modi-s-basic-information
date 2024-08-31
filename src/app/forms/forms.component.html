@@ -1,0 +1,292 @@
+<form [formGroup]="logInForm" (ngSubmit)="onSubmit()" class="flex flex-col items-center w-[50vw]">
+  <!-- Select Type of Person -->
+  <div class="flex flex-col w-full gap-2 space-x-4">
+    <label class="block mb-2 text-sm font-bold text-gray-700">نوع شخص *</label>
+    <div class="flex gap-3">
+      <button class="w-1/2 p-3 rounded-lg" type="button" [ngClass]="{'bg-blue-700 text-white !important': personType === 'individual',
+         'bg-gray-300 !important': personType !== 'individual'}" (click)="setPersonType('individual')">
+        حقیقی
+      </button>
+
+      <button class="w-1/2 p-3 rounded-lg" type="button" [ngClass]="{'bg-blue-500 text-white !important': personType === 'legal',
+         'bg-gray-300 !important': personType !== 'legal'} " (click)="setPersonType('legal')">
+        حقوقی
+      </button>
+    </div>
+  </div>
+
+  <!-- Select Type of Individual -->
+  <div *ngIf="individualType" class="flex flex-col w-full gap-2 mt-5 space-x-4">
+    <label class="block text-sm font-bold text-gray-700 ">نوع شخص حقیقی *</label>
+    <div class="grid grid-cols-3 grid-rows-1 gap-3 mt-2 ">
+
+      <button class="p-3 rounded-lg" type="button"
+        [ngClass]="{'bg-blue-500 text-white': individualType === 'iranian', 'bg-gray-300': individualType !== 'iranian'}"
+        (click)="individualType = 'iranian'">
+        ایرانی
+      </button>
+
+      <button class="p-3 rounded-lg" type="button"
+        [ngClass]="{'bg-blue-500 text-white': individualType === 'nonIranian', 'bg-gray-300': individualType !== 'nonIranian'}"
+        (click)="individualType = 'nonIranian'">
+        غیر ایرانی
+      </button>
+
+      <button class="p-3 rounded-lg" type="button"
+        [ngClass]="{'bg-blue-500 text-white': individualType === 'civilPartnership', 'bg-gray-300': individualType !== 'civilPartnership'}"
+        (click)="individualType = 'civilPartnership'">
+        مشارکت مدنی
+      </button>
+    </div>
+  </div>
+
+  <!-- Forms -->
+  <div class="mt-8">
+    <!-- Iranians Form -->
+    <div *ngIf="personType === 'individual' && individualType === 'iranian'"
+      class="grid grid-cols-2 grid-rows-3 mt-8 gap-x-3 ">
+      <!--نام-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0">
+          <mat-label class="text-sm">نام</mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="نام" formControlName="name"
+            [required]="isSubmitted" class="p-0">
+          <mat-error *ngIf="isSubmitted && logInForm.controls['name'].hasError('required')">
+            نام الزامی است
+          </mat-error>
+        </mat-form-field>
+      </span>
+
+      <!--فامیلی-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm">نام خانوادگی</mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="نام خانوادگی"
+            formControlName="lastName" required>
+        </mat-form-field>
+      </span>
+
+      <!--کد  ملی-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm"> کد ملی </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="کد ملی"
+            formControlName="nationalCode" required>
+        </mat-form-field>
+      </span>
+
+      <!--تاریخ تولد-->
+      <span class="flex flex-col">
+        <mat-form-field appearance="fill" class="w-full m-0">
+          <mat-label class="text-sm"> تاریخ تولد </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput [matDatepicker]="picker"
+            placeholder="1360/06/21" formControlName="date1" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div class="flex items-center text-sm text-gray-500 ">
+          <mat-icon class="mr-1">info</mat-icon>
+          <span>سن مودی باید بیشتر از 18 سال باشد</span>
+        </div>
+      </span>
+
+
+      <!--موبایل-->
+      <span class="flex flex-col">
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm"> شماره همراه مودی </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="09123456789" maxlength="11"
+            formControlName="phone" required>
+        </mat-form-field>
+        <div class="flex items-center text-sm text-gray-500 ">
+          <mat-icon class="mr-1">info</mat-icon>
+          <span>کد ملی باید با شماره همراه مطابقت داشته باشد</span>
+        </div>
+      </span>
+
+
+    </div>
+
+    <!-- Non-Iranians Form -->
+    <div *ngIf="personType === 'individual' && individualType === 'nonIranian'"
+      class="grid grid-cols-2 grid-rows-3 mt-8 gap-x-3">
+
+      <!--نام-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm">نام</mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="نام" formControlName="name"
+            required class="p-0">
+        </mat-form-field>
+      </span>
+
+      <!--فامیلی-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm">نام خانوادگی</mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="نام خانوادگی"
+            formControlName="lastName" required>
+        </mat-form-field>
+      </span>
+
+      <!--کد  ملی-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm"> کد اتباع </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="کد اتباع"
+            formControlName="nationalCode" required>
+        </mat-form-field>
+      </span>
+
+      <!--تاریخ تولد-->
+      <span class="flex flex-col">
+        <mat-form-field appearance="fill" class="w-full m-0">
+          <mat-label class="text-sm"> تاریخ تولد </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput [matDatepicker]="picker"
+            placeholder="1360/06/21" formControlName="date2" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div class="flex items-center text-sm text-gray-500 ">
+          <mat-icon class="mr-1">info</mat-icon>
+          <span>سن مودی باید بیشتر از 18 سال باشد</span>
+        </div>
+      </span>
+
+      <!--موبایل-->
+      <span class="flex flex-col">
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm"> شماره همراه مودی </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="09123456789" maxlength="11"
+            formControlName="phone" required>
+        </mat-form-field>
+        <div class="flex items-center text-sm text-gray-500 ">
+          <mat-icon class="mr-1">info</mat-icon>
+          <span>کد ملی باید با شماره همراه مطابقت داشته باشد</span>
+        </div>
+      </span>
+    </div>
+
+    <!-- Civil Partnership Form -->
+    <div *ngIf="personType === 'individual' && individualType === 'civilPartnership'" class="grid grid-cols-2 grid-rows-3 mt-8 gap-x-3">
+
+      <!--نام-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm"> نام نماینده</mat-label>
+          <input class="rounded-lg placeholder:text-sm placeholder:text-black" matInput placeholder="نام نماینده"
+            formControlName="name" required class="p-0">
+        </mat-form-field>
+      </span>
+
+      <!--فامیلی-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm">نام خانوادگی</mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder=" نام خانوادگی نماینده"
+            formControlName="lastName" required>
+        </mat-form-field>
+      </span>
+
+      <!-- شناسه مشارکت مدنی-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm"> شناسه مشارکت مدنی </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="شناسه مشارکت مدنی"
+            formControlName="identifier" required>
+        </mat-form-field>
+      </span>
+
+      <!--تاریخ تولد-->
+      <span class="flex flex-col">
+        <mat-form-field appearance="fill" class="w-full m-0">
+          <mat-label class="text-sm"> تاریخ تولد نماینده </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput [matDatepicker]="picker" placeholder="1360/06/21"
+            formControlName="date3" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div class="flex items-center text-sm text-gray-500 ">
+          <mat-icon class="mr-1">info</mat-icon>
+          <span>سن مودی باید بیشتر از 18 سال باشد</span>
+        </div>
+      </span>
+
+      <!--موبایل-->
+      <span class="flex flex-col">
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm"> شماره همراه مودی </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="09123456789"
+            maxlength="11" formControlName="phone" required>
+        </mat-form-field>
+        <div class="flex items-center text-sm text-gray-500 ">
+          <mat-icon class="mr-1">info</mat-icon>
+          <span>کد ملی باید با شماره همراه مطابقت داشته باشد</span>
+        </div>
+      </span>
+
+    </div>
+
+    <!-- Legal Form -->
+    <div *ngIf="personType === 'legal'" class="grid grid-cols-2 grid-rows-3 mt-8 gap-x-3">
+
+      <!-- نام شرکت-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0">
+          <mat-label class="text-sm"> نام شرکت/سازمان </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="نام شرکت/سازمان"
+            formControlName="name" required class="p-0">
+        </mat-form-field>
+      </span>
+
+      <!--شناسه شرکت-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm"> شناسه شرکت/سازمان </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="شناسه شرکت/سازمان"
+            formControlName="identifier" required>
+        </mat-form-field>
+      </span>
+
+      <!-- کد ملی مدیرعامل-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm"> کد ملی مدیر عامل </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder=" کد ملی مدیر عامل"
+            formControlName="nationalCode" required>
+        </mat-form-field>
+      </span>
+
+      <!--تاریخ ثبت شرکت-->
+      <span>
+        <mat-form-field appearance="fill" class="w-full m-0">
+          <mat-label class="text-sm"> تاریخ ثبت شرکت </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput [matDatepicker]="picker" placeholder="1360/06/21"
+            formControlName="date4" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </span>
+
+      <!--موبایل-->
+      <span class="flex flex-col">
+        <mat-form-field appearance="fill" class="w-full p-0 m-0">
+          <mat-label class="text-sm"> شماره همراه مدیرعامل </mat-label>
+          <input class="placeholder:text-sm placeholder:text-black" matInput placeholder="09123456789"
+            maxlength="11" formControlName="phone" required>
+        </mat-form-field>
+        <div class="flex items-center text-sm text-gray-500 ">
+          <mat-icon class="mr-1">info</mat-icon>
+          <span>کد ملی باید با شماره همراه مطابقت داشته باشد</span>
+        </div>
+      </span>
+
+
+    </div>
+  </div>
+
+  <div class="flex justify-between w-full mt-4">
+    <button mat-stroked-button disabled (click)="onSubmit()">مرحله قبلی</button>
+    <button mat-stroked-button>مرحله بعدی</button>
+  </div>
+</form>
